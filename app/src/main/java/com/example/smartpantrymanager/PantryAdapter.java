@@ -13,16 +13,25 @@ import java.util.List;
 public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryViewHolder> {
 
     private List<PantryItem> pantryList;
-    private OnItemClickListener listener;
+    private OnItemClickListener clickListener;
+    private OnItemLongClickListener longClickListener;
 
-    // Interface for click events (we will use this for Edit/Delete later)
+    // Tap listener (for Edit)
     public interface OnItemClickListener {
         void onItemClick(PantryItem item);
     }
 
-    public PantryAdapter(List<PantryItem> pantryList, OnItemClickListener listener) {
+    // Long-press listener (for Delete)
+    public interface OnItemLongClickListener {
+        void onItemLongClick(PantryItem item);
+    }
+
+    public PantryAdapter(List<PantryItem> pantryList,
+                         OnItemClickListener clickListener,
+                         OnItemLongClickListener longClickListener) {
         this.pantryList = pantryList;
-        this.listener = listener;
+        this.clickListener = clickListener;
+        this.longClickListener = longClickListener;
     }
 
     @NonNull
@@ -38,15 +47,23 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
         PantryItem currentItem = pantryList.get(position);
         holder.textViewName.setText(currentItem.getName());
 
-        // Format the quantity and unit nicely (e.g., "2.0 kg")
         String quantityText = currentItem.getQuantity() + " " + currentItem.getUnit();
         holder.textViewQuantity.setText(quantityText);
 
-        // Handle clicks
+        // Tap → Edit
         holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onItemClick(currentItem);
+            if (clickListener != null) {
+                clickListener.onItemClick(currentItem);
             }
+        });
+
+        // Long-press → Delete
+        holder.itemView.setOnLongClickListener(v -> {
+            if (longClickListener != null) {
+                longClickListener.onItemLongClick(currentItem);
+                return true;
+            }
+            return false;
         });
     }
 
@@ -55,7 +72,6 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
         return pantryList.size();
     }
 
-    // ViewHolder Class
     public static class PantryViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewName;
         public TextView textViewQuantity;

@@ -1,10 +1,13 @@
 package com.example.smartpantrymanager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,24 +30,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 1. Initialize UI
         recyclerView = findViewById(R.id.recyclerViewPantry);
         fabAddItem = findViewById(R.id.fabAddItem);
 
-        // 2. Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         pantryList = new ArrayList<>();
 
-        // 3. Adapter
-        adapter = new PantryAdapter(pantryList, item -> {
-            // TODO: Edit on click
-        });
+        // Set up adapter with BOTH click and long-click handlers
+        adapter = new PantryAdapter(pantryList,
+                item -> openEditScreen(item),          // Tap → Edit
+                item -> confirmDelete(item));          // Long-press → Delete
         recyclerView.setAdapter(adapter);
 
-        // 4. Database
         pantryDAO = new PantryDAO(this);
 
-        // 5. FAB → Add/Edit
         fabAddItem.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, AddEditIngredientActivity.class);
             startActivity(intent);
@@ -67,7 +66,35 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    // TOOLBAR MENU
+    // ---- TAP → Edit ----
+    private void openEditScreen(PantryItem item) {
+        Intent intent = new Intent(MainActivity.this, AddEditIngredientActivity.class);
+        intent.putExtra("pantry_item_id", item.getId());
+        startActivity(intent);
+    }
+
+    // ---- LONG-PRESS → Delete ----
+    private void confirmDelete(PantryItem item) {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete " + item.getName() + "?")
+                .setMessage("This will remove it from your pantry.")
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        pantryDAO.open();
+                        pantryDAO.deletePantryItem(item);
+                        pantryDAO.close();
+                        loadPantryItems();
+                        Toast.makeText(MainActivity.this,
+                                item.getName() + " deleted",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    // ---- TOOLBAR MENU ----
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
