@@ -5,30 +5,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".SuggestedRecipesActivity">
 
+    <!-- Header -->
     <TextView
         android:id="@+id/textViewHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:text="Recipes You Can Make Right Now"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:background="#F5F5F5"
+        android:textColor="#1976D2"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewRecipes"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:paddingTop="8dp"
+        android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/textViewHeader"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- "No matches" message -->
     <TextView
         android:id="@+id/textViewNoMatches"
         android:layout_width="0dp"
