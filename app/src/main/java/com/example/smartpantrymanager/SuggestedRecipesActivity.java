@@ -1,5 +1,6 @@
 package com.example.smartpantrymanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -34,8 +35,9 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
         matchedRecipes = new ArrayList<>();
 
         adapter = new RecipeAdapter(matchedRecipes, recipe -> {
-            // TODO: Open RecipeDetailActivity in Step 10
-            Toast.makeText(this, "Selected: " + recipe.getName(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(SuggestedRecipesActivity.this, RecipeDetailActivity.class);
+            intent.putExtra("recipe_id", recipe.getId());
+            startActivity(intent);
         });
         recyclerView.setAdapter(adapter);
 

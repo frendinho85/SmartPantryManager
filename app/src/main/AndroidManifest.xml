@@ -13,7 +13,7 @@
         android:theme="@style/Theme.SmartPantryManager"
         tools:targetApi="31">
 
-        <!-- Main Activity — the launcher (opens first) -->
+        <!-- Main Activity — Launcher (opens first) -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -31,6 +31,9 @@
         <!-- Suggested Recipes Screen (uses strict-matching) -->
         <activity
             android:name=".SuggestedRecipesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RecipeDetailActivity"
             android:exported="false" />
 
     </application>
