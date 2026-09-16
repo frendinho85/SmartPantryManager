@@ -38,6 +38,7 @@ public class AddEditIngredientActivity extends AppCompatActivity {
         buttonSave = findViewById(R.id.buttonSave);
 
         // 3. Set up the Spinner (dropdown) with units
+        // 3. Set up the Spinner (dropdown) with units
         String[] units = {"piece", "g", "kg", "ml", "L", "tsp", "tbsp", "cup"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
@@ -47,6 +48,15 @@ public class AddEditIngredientActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerUnit.setAdapter(adapter);
 
+        // 3b. Pre-select the default unit from Settings
+        android.content.SharedPreferences prefs = getSharedPreferences("SmartPantryPrefs", MODE_PRIVATE);
+        String defaultUnit = prefs.getString("default_unit", "piece");
+        for (int i = 0; i < units.length; i++) {
+            if (units[i].equals(defaultUnit)) {
+                spinnerUnit.setSelection(i);
+                break;
+            }
+        }
         // 4. Set up the Save button click listener
         buttonSave.setOnClickListener(v -> saveItem());
     }

@@ -2,7 +2,8 @@ package com.example.smartpantrymanager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,14 +16,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    // UI Components
     private RecyclerView recyclerView;
     private PantryAdapter adapter;
     private List<PantryItem> pantryList;
     private FloatingActionButton fabAddItem;
-    private Button buttonShowRecipes;
-
-    // Database
     private PantryDAO pantryDAO;
 
     @Override
@@ -30,33 +27,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 1. Initialize UI Elements
+        // 1. Initialize UI
         recyclerView = findViewById(R.id.recyclerViewPantry);
         fabAddItem = findViewById(R.id.fabAddItem);
-        buttonShowRecipes = findViewById(R.id.buttonShowRecipes);
 
         // 2. Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         pantryList = new ArrayList<>();
 
-        // 3. Set up the Adapter
+        // 3. Adapter
         adapter = new PantryAdapter(pantryList, item -> {
-            // TODO: Edit on click — we'll implement this later
+            // TODO: Edit on click
         });
         recyclerView.setAdapter(adapter);
 
-        // 4. Initialize Database
+        // 4. Database
         pantryDAO = new PantryDAO(this);
 
-        // 5. Floating Action Button → Opens Add/Edit screen
+        // 5. FAB → Add/Edit
         fabAddItem.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, AddEditIngredientActivity.class);
-            startActivity(intent);
-        });
-
-        // 6. "Recipes" Button → Opens Suggested Recipes screen
-        buttonShowRecipes.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, SuggestedRecipesActivity.class);
             startActivity(intent);
         });
     }
@@ -64,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Reload the pantry list every time this screen becomes visible
         loadPantryItems();
     }
 
@@ -73,11 +62,30 @@ public class MainActivity extends AppCompatActivity {
         List<PantryItem> items = pantryDAO.getAllPantryItems();
         pantryDAO.close();
 
-        // Clear the old list and add the new data
         pantryList.clear();
         pantryList.addAll(items);
-
-        // Notify the adapter that the data has changed
         adapter.notifyDataSetChanged();
+    }
+
+    // TOOLBAR MENU
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_recipes) {
+            startActivity(new Intent(MainActivity.this, SuggestedRecipesActivity.class));
+            return true;
+        }
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
