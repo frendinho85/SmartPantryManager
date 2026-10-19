@@ -1,3 +1,11 @@
+/**
+ * Smart Pantry Manager - Recipe Data Access Object
+ * Student: Mmametlafrederick Moloto (402411236)
+ * Module: Mobile App Development 700
+ *
+ * This class handles retrieving recipes and their associated ingredients
+ * from the recipes and recipe_ingredients tables.
+ */
 package com.example.smartpantrymanager;
 
 import android.content.Context;
@@ -24,9 +32,7 @@ public class RecipeDAO {
         dbHelper.close();
     }
 
-    /**
-     * Get all recipes from the database (without their ingredient lists yet).
-     */
+    // Retrieves all recipes from the database and attaches their required ingredients
     public List<Recipe> getAllRecipes() {
         List<Recipe> recipes = new ArrayList<>();
 
@@ -57,9 +63,7 @@ public class RecipeDAO {
         return recipes;
     }
 
-    /**
-     * Get a single recipe by its ID, including its ingredient list.
-     */
+    // Retrieves a single recipe by its ID, including its full ingredient list
     public Recipe getRecipeById(int recipeId) {
         Cursor cursor = database.query(
                 DBHelper.TABLE_RECIPES,

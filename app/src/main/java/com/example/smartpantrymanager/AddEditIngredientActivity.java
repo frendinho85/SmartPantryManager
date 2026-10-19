@@ -1,3 +1,11 @@
+/**
+ * Smart Pantry Manager - Add/Edit Ingredient Activity
+ * Student: Mmametlafrederick Moloto (402411236)
+ * Module: Mobile App Development 700
+ *
+ * This activity provides a form for the user to add a new pantry item
+ * or edit an existing one. It validates input before saving to the database.
+ */
 package com.example.smartpantrymanager;
 
 import android.os.Bundle;
@@ -66,7 +74,7 @@ public class AddEditIngredientActivity extends AppCompatActivity {
         buttonSave.setOnClickListener(v -> saveItem());
     }
 
-    // Pre-fill fields with the existing item's data
+    // Pre-fills the form fields when the user is editing an existing item
     private void loadExistingItem() {
         pantryDAO.open();
         PantryItem existing = pantryDAO.getPantryItemById(editItemId);
@@ -107,6 +115,7 @@ public class AddEditIngredientActivity extends AppCompatActivity {
         }
     }
 
+    // Validates user input and either inserts a new item or updates an existing one
     private void saveItem() {
         String name = editTextName.getText().toString().trim();
         String quantityStr = editTextQuantity.getText().toString().trim();

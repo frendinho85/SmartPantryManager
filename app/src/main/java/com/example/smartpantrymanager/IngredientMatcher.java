@@ -1,10 +1,19 @@
+/**
+ * Smart Pantry Manager - Strict Matching Algorithm
+ * Student: Mmametlafrederick Moloto (402411236)
+ * Module: Mobile App Development 700
+ *
+ * This class contains the core business logic that determines if a recipe
+ * can be made strictly using only the ingredients currently in the user's pantry.
+ */
 package com.example.smartpantrymanager;
 
 import java.util.List;
 
 public class IngredientMatcher {
 
-    // ---------- NAME NORMALIZATION ----------
+    // Normalizes ingredient names by converting to lowercase, removing punctuation,
+    // and handling basic plural forms (e.g., "Tomatoes" becomes "tomato").
     public static String normalizeName(String name) {
         if (name == null) return "";
         String n = name.toLowerCase().trim().replaceAll("[^a-z0-9 ]", "");
@@ -20,8 +29,8 @@ public class IngredientMatcher {
         return n;
     }
 
-    // ---------- UNIT CONVERSION ----------
-    // Converts everything to g (solids) or ml (liquids)
+    // Converts all measurements to a base unit (grams for solids, milliliters for liquids)
+    // so that "1 kg" can be compared correctly against "500 g".
     public static double toBase(double qty, String unit) {
         if (unit == null) return qty;
         switch (unit.toLowerCase().trim()) {
@@ -37,7 +46,8 @@ public class IngredientMatcher {
         }
     }
 
-    // ---------- SINGLE INGREDIENT CHECK ----------
+    // The core strict-matching rule. Returns true ONLY if EVERY ingredient
+    // required by the recipe is present in the pantry in sufficient quantity.
     private static boolean pantryHasEnough(PantryItem available, RecipeIngredient required) {
         if (!normalizeName(available.getName()).equals(normalizeName(required.getName()))) {
             return false;

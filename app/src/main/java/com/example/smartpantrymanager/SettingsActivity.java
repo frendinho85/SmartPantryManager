@@ -1,3 +1,10 @@
+/**
+ * Smart Pantry Manager - Settings Activity
+ * Student: Mmametlafrederick Moloto (402411236)
+ * Module: Mobile App Development 700
+ * This activity manages user preferences using SharedPreferences,
+ * including default units and expiring-soon alerts.
+ */
 package com.example.smartpantrymanager;
 
 import android.content.DialogInterface;
@@ -62,6 +69,7 @@ public class SettingsActivity extends AppCompatActivity {
         buttonClearPantry.setOnClickListener(v -> confirmClearPantry());
     }
 
+    // Reads saved settings from SharedPreferences and updates the UI
     private void loadPreferences() {
         // Expiry alerts (default ON)
         boolean expiryEnabled = preferences.getBoolean(KEY_EXPIRY_ALERTS, true);
@@ -78,6 +86,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    // Saves the current UI settings to SharedPreferences
     private void savePreferences() {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(KEY_EXPIRY_ALERTS, switchExpiryAlerts.isChecked());

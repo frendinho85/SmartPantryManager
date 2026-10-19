@@ -1,3 +1,12 @@
+/**
+ * Smart Pantry Manager - Main Activity
+ * Student: Mmametlafrederick Moloto (402411236)
+ * Module: Mobile App Development 700
+ *
+ * This activity serves as the main hub of the application. It displays the pantry list
+ * using a RecyclerView, handles navigation to other screens, and manages the Floating
+ * Action Button for adding new items.
+ */
 package com.example.smartpantrymanager;
 
 import android.content.DialogInterface;
@@ -30,32 +39,44 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // 1. Initialize UI Elements
+        // Linking Java variables to the XML views defined in activity_main.xml
         recyclerView = findViewById(R.id.recyclerViewPantry);
         fabAddItem = findViewById(R.id.fabAddItem);
 
+        // 2. Set up RecyclerView
+        // A LinearLayoutManager is used to display the list items vertically
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         pantryList = new ArrayList<>();
 
-        // Set up adapter with BOTH click and long-click handlers
+        // 3. Set up the Adapter
+        // The adapter handles the binding of PantryItem data to the list_item_pantry layout
         adapter = new PantryAdapter(pantryList,
                 item -> openEditScreen(item),          // Tap → Edit
                 item -> confirmDelete(item));          // Long-press → Delete
         recyclerView.setAdapter(adapter);
 
+        // 4. Initialize Database
         pantryDAO = new PantryDAO(this);
 
+        // 5. FAB → Opens Add/Edit screen
+        // When the floating action button is tapped, an Intent is created to open
+        // the AddEditIngredientActivity
         fabAddItem.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, AddEditIngredientActivity.class);
             startActivity(intent);
         });
     }
 
+    // This method is called every time the activity comes back to the foreground.
+    // It ensures the list is refreshed if the user just added or deleted an item.
     @Override
     protected void onResume() {
         super.onResume();
         loadPantryItems();
     }
 
+    // Retrieves all pantry items from the SQLite database and updates the RecyclerView
     private void loadPantryItems() {
         pantryDAO.open();
         List<PantryItem> items = pantryDAO.getAllPantryItems();

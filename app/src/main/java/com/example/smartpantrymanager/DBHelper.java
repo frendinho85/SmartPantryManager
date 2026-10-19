@@ -1,3 +1,10 @@
+/**
+ * Smart Pantry Manager - Database Helper
+ * Student: Mmametlafrederick Moloto (402411236)
+ * Module: Mobile App Development 700
+ *
+ * This class manages the creation, upgrading, and seeding of the SQLite database.
+ */
 package com.example.smartpantrymanager;
 
 import android.content.Context;
@@ -36,6 +43,7 @@ public class DBHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    // Creates the database tables when the app is launched for the first time.
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_PANTRY_TABLE = "CREATE TABLE " + TABLE_PANTRY + "("
@@ -73,6 +81,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    // Seeds 18 pre-loaded recipes into the database so users have data to match against.
     private void seedRecipes(SQLiteDatabase db) {
 
         insertRecipe(db, "Scrambled Eggs",

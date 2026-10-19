@@ -1,3 +1,11 @@
+/**
+ * Smart Pantry Manager - Pantry Data Access Object
+ * Student: Mmametlafrederick Moloto (402411236)
+ * Module: Mobile App Development 700
+ *
+ * This class handles all CRUD (Create, Read, Update, Delete) operations
+ * for the pantry_items table in the SQLite database.
+ */
 package com.example.smartpantrymanager;
 
 import android.content.ContentValues;
@@ -25,11 +33,7 @@ public class PantryDAO {
         dbHelper.close();
     }
 
-    // ============================================================
-    // CRUD OPERATIONS
-    // ============================================================
-
-    // CREATE: Add a new pantry item
+    // Inserts a new ingredient into the pantry_items table
     public long addPantryItem(PantryItem item) {
         ContentValues values = new ContentValues();
         values.put(DBHelper.COLUMN_PANTRY_NAME, item.getName());
@@ -39,7 +43,7 @@ public class PantryDAO {
         return database.insert(DBHelper.TABLE_PANTRY, null, values);
     }
 
-    // READ: Get all pantry items
+    // Retrieves all ingredients currently stored in the pantry_items table
     public List<PantryItem> getAllPantryItems() {
         List<PantryItem> items = new ArrayList<>();
         Cursor cursor = database.query(
@@ -104,7 +108,7 @@ public class PantryDAO {
         );
     }
 
-    // DELETE: Remove a single item
+    // Deletes a specific ingredient from the database using its ID
     public void deletePantryItem(PantryItem item) {
         database.delete(
                 DBHelper.TABLE_PANTRY,

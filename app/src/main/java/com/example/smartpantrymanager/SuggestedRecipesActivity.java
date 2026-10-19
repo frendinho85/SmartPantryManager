@@ -1,3 +1,10 @@
+/**
+ * Smart Pantry Manager - Suggested Recipes Activity
+ * Student: Mmametlafrederick Moloto (402411236)
+ * Module: Mobile App Development 700
+ * This activity displays recipes that can be made right now, using the
+ * strict-matching algorithm to filter out incomplete recipes.
+ */
 package com.example.smartpantrymanager;
 
 import android.content.Intent;
@@ -54,6 +61,8 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
         loadMatchingRecipes();
     }
 
+    // Loads pantry items and recipes, runs the strict-matching logic,
+    // and updates the RecyclerView with only the valid recipes.
     private void loadMatchingRecipes() {
         // 1. Get current pantry items
         pantryDAO.open();

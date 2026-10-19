@@ -1,3 +1,10 @@
+/**
+ * Smart Pantry Manager - Recipe Detail Activity
+ * Student: Mmametlafrederick Moloto (402411236)
+ * Module: Mobile App Development 700
+ * This activity displays the full ingredient list and preparation steps
+ * for a selected recipe.
+ */
 package com.example.smartpantrymanager;
 
 import android.os.Bundle;
@@ -55,6 +62,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         buttonBack.setOnClickListener(v -> finish());
     }
 
+    // Populates the screen with the recipe name, ingredients, and method
     private void displayRecipe(Recipe recipe) {
         // Name
         textViewRecipeName.setText(recipe.getName());

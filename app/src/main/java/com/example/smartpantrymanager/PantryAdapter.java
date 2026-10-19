@@ -1,3 +1,11 @@
+/**
+ * Smart Pantry Manager - Pantry Adapter
+ * Student: Mmametlafrederick Moloto (402411236)
+ * Module: Mobile App Development 700
+ *
+ * This adapter binds PantryItem objects to the RecyclerView, formatting
+ * the display and handling tap (edit) and long-press (delete) events.
+ */
 package com.example.smartpantrymanager;
 
 import android.view.LayoutInflater;
@@ -42,6 +50,7 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
         return new PantryViewHolder(view);
     }
 
+    // Binds data from the PantryItem object into the TextView widgets of the row
     @Override
     public void onBindViewHolder(@NonNull PantryViewHolder holder, int position) {
         PantryItem currentItem = pantryList.get(position);
